@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-4">
     <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-info text-white">
             <h3 class="mb-0">{{ type }}</h3>
         </div>
         <div class="card-body">
@@ -31,7 +31,7 @@
                     </div>
                 {% endfor %}
 
-                <button type="submit" class="btn btn-success">{{ type }}</button>
+                <button type="submit" class="btn btn-primary">{{ type }}</button>
                 <a href="{% url 'journalist_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
             </form>
         </div>

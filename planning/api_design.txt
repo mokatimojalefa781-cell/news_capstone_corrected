@@ -1,0 +1,16 @@
+# News Application – API Design
+
+## Overview
+RESTful API for retrieving approved articles for publishers/journalists.
+
+## Endpoints
+
+1. /api/articles/ [GET] → All approved articles
+2. /api/publishers/<int:publisher_id>/articles/ [GET] → Approved articles by publisher
+3. /api/journalists/<int:journalist_id>/articles/ [GET] → Approved articles by journalist
+4. /api/readers/<int:reader_id>/subscriptions/ [GET] → Articles subscribed by reader
+
+## Notes
+- Responses in JSON
+- Only approved content is returned
+- Optional: pagination for large datasets

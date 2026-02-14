@@ -1,11 +1,26 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% block content %}
-<h2>Articles</h2>
-<ul>
-    {% for article in articles %}
-    <li><strong>{{ article.title }}</strong><br>{{ article.content|truncatechars:160 }}<br>by {{ article.journalist.username }} {% if article.publisher %}({{ article.publisher.name }}){% endif %}</li>
-    {% empty %}
-    <li>No articles available.</li>
-    {% endfor %}
-</ul>
+<div class="container mt-4">
+    <h2>Articles</h2>
+
+    {% if articles %}
+        <ul class="list-group">
+            {% for article in articles %}
+                <li class="list-group-item">
+                    <a href="{% url 'view_article' article.pk %}">{{ article.title }}</a>
+                    <br>
+                    <small>By {{ article.journalist.username }} | Publisher: {{ article.publisher.name }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info">No articles available.</div>
+    {% endif %}
+
+    <a class="btn btn-secondary mt-3" href="{% url 'home' %}">Back to Home</a>
+</div>
 {% endblock %}
+
+
+

@@ -1,0 +1,62 @@
+{% load static navigation %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Application</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>News Application</h1>
+        <nav>
+            <a href="{% url 'home' %}" class="{% if request.path == '/' or request.path == '/home/' %}active{% endif %}">Home</a>
+            <a href="{% url 'article_list' %}" class="{% if request.path|startswith:'/articles/' %}active{% endif %}">Articles</a>
+            <a href="{% url 'publisher_list' %}" class="{% if request.path|startswith:'/publishers/' %}active{% endif %}">Publishers</a>
+
+            {% if user.is_authenticated %}
+                {% if user.role == 'reader' %}
+                    <a href="{% url 'subscribe_publishers' %}">Subscribe Publishers</a>
+                    <a href="{% url 'subscribe_journalists' %}">Subscribe Journalists</a>
+                {% elif user.role == 'journalist' %}
+                    <a href="{% url 'journalist_dashboard' %}">Journalist Dashboard</a>
+                {% elif user.role == 'editor' %}
+                    <a href="{% url 'pending_articles' %}">Editor Review</a>
+                {% endif %}
+
+                <!-- Logout link works directly -->
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <main>
+        {% block content %}
+        <!-- Page-specific content will be inserted here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; {{ now|date:"Y" }} News Application</p>
+    </footer>
+</body>
+</html>
+
+
+
+
+
+
+

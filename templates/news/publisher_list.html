@@ -1,15 +1,44 @@
-{% extends 'base.html' %}
+{% extends "news/base.html" %}
+
 {% block content %}
-<h2>Publishers</h2>
-<ul>
-{% for publisher in publishers %}
-    <li><strong>{{ publisher.name }}</strong><br>
-        Editors: {% for editor in publisher.editors.all %}{{ editor.username }}{% if not forloop.last %}, {% endif %}{% empty %}None{% endfor %}
-        <br>
-        Journalists: {% for journalist in publisher.journalists.all %}{{ journalist.username }}{% if not forloop.last %}, {% endif %}{% empty %}None{% endfor %}
-    </li>
-{% empty %}
-    <li>No publishers found.</li>
-{% endfor %}
-</ul>
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-center">🏢 Publishers</h2>
+
+    {% if publishers %}
+        <div class="row">
+            {% for publisher in publishers %}
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm h-100 publisher-card">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <h5 class="card-title">{{ publisher.name }}</h5>
+
+                            <p class="card-text text-muted">
+                                Trusted news source bringing quality content.
+                            </p>
+
+                            {% if user.is_authenticated and user.role == "reader" %}
+                                <form method="post" action="{% url 'subscribe_publishers' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="publisher_id" value="{{ publisher.id }}">
+                                    <button class="btn btn-outline-primary w-100">
+                                        ➕ Subscribe
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            No publishers found.
+        </div>
+    {% endif %}
+
+</div>
 {% endblock %}
+
+
+

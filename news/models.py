@@ -1,8 +1,12 @@
+"""Database models for publishers, articles, and newsletters."""
+
 from django.conf import settings
 from django.db import models
 
 
 class Publisher(models.Model):
+    """An organisation that publishes articles and newsletters."""
+
     name = models.CharField(max_length=150, unique=True)
 
     editors = models.ManyToManyField(
@@ -19,11 +23,16 @@ class Publisher(models.Model):
         limit_choices_to={"role": "journalist"},
     )
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
 
 class Newsletter(models.Model):
+    """Newsletter content submitted by a journalist for approval."""
+
     title = models.CharField(max_length=200)
     content = models.TextField()
 
@@ -47,11 +56,16 @@ class Newsletter(models.Model):
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-created_at"]
+
     def __str__(self):
         return self.title
 
 
 class Article(models.Model):
+    """Article content submitted by a journalist for approval."""
+
     title = models.CharField(max_length=200)
     content = models.TextField()
 
@@ -84,6 +98,9 @@ class Article(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
 
     def __str__(self):
         return self.title

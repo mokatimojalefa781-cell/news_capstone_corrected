@@ -5,19 +5,22 @@ __pycache__/
 *.pyd
 
 # Django
-*.log
+*.sqlite3
 db.sqlite3
-media/
+*.log
+*.pot
+*.pyc
 
-# Virtual environments
+# Environment
 venv/
-.venv/
 env/
+*.env
 
-# OS / Editor
+# OS
 .DS_Store
+Thumbs.db
+
+# IDEs
 .vscode/
 .idea/
-
-# Sphinx
-docs/_build/
+*.swp

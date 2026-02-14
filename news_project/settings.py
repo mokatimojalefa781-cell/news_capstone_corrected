@@ -1,89 +1,107 @@
-"""Django settings for the news project."""
-
-import os
 from pathlib import Path
 
+# =========================
+# BASE DIR
+# =========================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-change-this-for-production")
-DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() == "true"
-ALLOWED_HOSTS = ["*"]
+# =========================
+# SECURITY
+# =========================
+SECRET_KEY = 'django-insecure-temp-key-for-school-project'
+DEBUG = True
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+# =========================
+# APPLICATIONS
+# =========================
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "rest_framework",
-    "accounts.apps.AccountsConfig",
-    "news.apps.NewsConfig",
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    'accounts',
+    'news',
 ]
 
+# =========================
+# MIDDLEWARE
+# =========================
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = "news_project.urls"
+# =========================
+# URL CONFIG
+# =========================
+ROOT_URLCONF = 'news_project.urls'
 
+# =========================
+# TEMPLATES
+# =========================
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
-    }
+    },
 ]
 
-WSGI_APPLICATION = "news_project.wsgi.application"
+# =========================
+# WSGI
+# =========================
+WSGI_APPLICATION = 'news_project.wsgi.application'
 
+# =========================
+# DATABASE (SQLite by default)
+# =========================
 DATABASES = {
-    "default": {
-        "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.getenv("DB_NAME", BASE_DIR / "db.sqlite3"),
-        "USER": os.getenv("DB_USER", ""),
-        "PASSWORD": os.getenv("DB_PASSWORD", ""),
-        "HOST": os.getenv("DB_HOST", ""),
-        "PORT": os.getenv("DB_PORT", ""),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  # Change to 'django.db.backends.mysql' for MariaDB
+        'NAME': BASE_DIR / 'db.sqlite3',         # For MariaDB: 'NAME': 'news_db',
+        # For MariaDB, also add:
+        # 'USER': 'your_db_user',
+        # 'PASSWORD': 'your_db_password',
+        # 'HOST': 'localhost',
+        # 'PORT': '3306',
     }
 }
 
-AUTH_USER_MODEL = "accounts.CustomUser"
+# =========================
+# AUTHENTICATION
+# =========================
+AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_PASSWORD_VALIDATORS = []
 
-AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
-]
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "article_list"
+LOGOUT_REDIRECT_URL = 'home'
 
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "Africa/Johannesburg"
-USE_I18N = True
-USE_TZ = True
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# =========================
+# STATIC FILES
+# =========================
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-LOGIN_URL = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+# =========================
+# DEFAULTS
+# =========================
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

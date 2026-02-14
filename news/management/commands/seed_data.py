@@ -8,24 +8,27 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         user_model = get_user_model()
 
-        editor = user_model.objects.create_user(
-            username='editor1', password='password123', role='editor'
+        editor, _ = user_model.objects.get_or_create(
+            username='editor1', defaults={'password': 'password123', 'role': 'editor', 'email': 'editor1@example.com'}
         )
-        journalist = user_model.objects.create_user(
-            username='journalist1', password='password123', role='journalist'
+        journalist, _ = user_model.objects.get_or_create(
+            username='journalist1', defaults={'password': 'password123', 'role': 'journalist', 'email': 'journalist1@example.com'}
         )
 
-        publisher = Publisher.objects.create(name='Daily News')
+        publisher, _ = Publisher.objects.get_or_create(name='Daily News')
         publisher.editors.add(editor)
         publisher.journalists.add(journalist)
 
-        Article.objects.create(
+        article, _ = Article.objects.get_or_create(
             title='Sample Article',
-            content='This is a sample approved article.',
-            journalist=journalist,
-            publisher=publisher,
-            is_approved=True,
-            approved_by=editor,
+            defaults={
+                'content': 'This is a sample approved article.',
+                'journalist': journalist,
+                'publisher': publisher,
+                'is_approved': True,
+                'approved_by': editor
+            }
         )
 
         self.stdout.write(self.style.SUCCESS('Seed data created successfully.'))
+

@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5">
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
             <h3 class="mb-0">{{ type }}</h3>
         </div>
         <div class="card-body">
+            <!-- Messages -->
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -16,12 +17,13 @@
                 {% endfor %}
             {% endif %}
 
+            <!-- Article Form -->
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="mb-3">
                         {{ field.label_tag }}
-                        {{ field }}
+                        {{ field|add_class:"form-control" }}
                         {% if field.help_text %}
                             <div class="form-text">{{ field.help_text }}</div>
                         {% endif %}
@@ -31,8 +33,10 @@
                     </div>
                 {% endfor %}
 
-                <button type="submit" class="btn btn-success">{{ type }}</button>
-                <a href="{% url 'journalist_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">{{ type }}</button>
+                    <a href="{% url 'journalist_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
             </form>
         </div>
     </div>

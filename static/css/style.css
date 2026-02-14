@@ -1,0 +1,217 @@
+/* ===== COLORS & VARIABLES ===== */
+:root {
+    --primary-blue: #1e3a8a;     /* Deep royal blue */
+    --secondary-blue: #3b82f6;   /* Vibrant sky blue */
+    --accent-yellow: #facc15;    /* Bright yellow */
+    --danger-red: #ef4444;       /* Attention red */
+    --light-bg: #f0f4f8;         /* Soft light background */
+    --text-dark: #111827;        /* Almost black */
+    --text-light: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.15);
+    --radius: 10px;
+}
+
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+/* ===== BODY ===== */
+body {
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 8px var(--shadow);
+    border-radius: var(--radius);
+}
+
+.navbar a {
+    color: var(--text-light);
+    text-decoration: none;
+    margin-left: 1.2rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    color: var(--accent-yellow);
+    transform: scale(1.1);
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: var(--radius);
+    box-shadow: 0 6px 20px var(--shadow);
+}
+
+/* ===== HEADINGS ===== */
+h1, h2, h3 {
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px var(--shadow);
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: var(--radius);
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
+    color: var(--text-light);
+    box-shadow: 0 4px 10px var(--shadow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px var(--shadow);
+}
+
+.btn-danger {
+    background: var(--danger-red);
+    color: var(--text-light);
+    box-shadow: 0 4px 10px var(--shadow);
+}
+
+.btn-danger:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px var(--shadow);
+}
+
+/* ===== FORMS ===== */
+form input, form textarea, form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    transition: 0.3s;
+}
+
+form input:focus, form textarea:focus, form select:focus {
+    border-color: var(--secondary-blue);
+    box-shadow: 0 0 8px var(--secondary-blue);
+    outline: none;
+}
+
+/* ===== TABLES ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background: var(--secondary-blue);
+    color: var(--text-light);
+}
+
+table tr:hover {
+    background: #f1f5f9;
+    transform: scale(1.01);
+    transition: 0.2s;
+}
+
+/* ===== ALERTS ===== */
+.alert {
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    border-radius: var(--radius);
+    font-weight: 600;
+}
+
+.alert-success {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.alert-error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background: var(--primary-blue);
+    color: var(--text-light);
+    text-align: center;
+    padding: 20px;
+    margin-top: 60px;
+    border-radius: var(--radius);
+    box-shadow: 0 -4px 10px var(--shadow);
+}
+
+/* ===== LINKS ===== */
+a {
+    color: var(--secondary-blue);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: var(--accent-yellow);
+    text-decoration: underline;
+}
+
+/* ===== SPECIAL CARDS / HIGHLIGHTS ===== */
+.card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 6px 15px var(--shadow);
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px var(--shadow);
+}
+
+.publisher-card {
+    transition: all 0.3s ease;
+    border-radius: 14px;
+}
+
+.publisher-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.publisher-card .btn {
+    font-weight: 600;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+}
+

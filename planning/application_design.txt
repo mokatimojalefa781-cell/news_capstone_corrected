@@ -1,0 +1,65 @@
+# News Application – Application Design
+
+## Project Overview
+The News Application allows users to read and manage news articles and newsletters. Users have roles (Reader, Journalist, Editor), and permissions are based on these roles.
+
+---
+
+## Functional Requirements
+1. User Roles
+   - Reader: view approved articles/newsletters, subscribe to publishers/journalists
+   - Journalist: create, view, update, delete own content
+   - Editor: approve/reject articles/newsletters
+
+2. Authentication
+   - Login system
+   - Admin registers new users
+
+3. Articles & Newsletters
+   - Must be approved by Editor before being visible to Readers
+
+4. Subscriptions
+   - Notifications sent after approval to subscribers
+
+5. Access Control
+   - Readers cannot edit content
+   - Journalists can edit only their own content
+   - Editors can edit/delete all content
+
+6. Reports
+   - task_overview.txt, user_overview.txt
+   - Admin can view summary statistics
+
+---
+
+## Non-Functional Requirements
+- User-friendly UI (templates + CSS)
+- Data in MariaDB
+- Modular code following PEP8
+- Defensive programming
+
+---
+
+## Database Design
+Models:
+- CustomUser: role, reader_subscriptions, articles_published, newsletters_published
+- Publisher: name, editors, journalists
+- Article: title, description, assigned_to, publisher, approved
+- Newsletter: title, content, assigned_to, publisher, approved
+
+---
+
+## User Flow
+- Reader: login → view content → subscribe
+- Journalist: login → create/edit content → await approval
+- Editor: login → approve/reject content → send notifications
+
+---
+
+## Templates/UI
+- base.html
+- home.html
+- article_detail.html
+- publisher_list.html
+- journalist_dashboard.html
+- editor_dashboard.html
