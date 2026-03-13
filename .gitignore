@@ -26,5 +26,7 @@ Thumbs.db
 *.env
 .env
 
-# Sphinx build
+# Sphinx / Documentation
 docs/_build/
+docs/_static/
+docs/*.html
