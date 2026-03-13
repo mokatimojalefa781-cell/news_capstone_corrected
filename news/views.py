@@ -4,6 +4,7 @@ Views for the News Application.
 This module provides views for managing articles, newsletters, publishers,
 and subscriptions with role-based access control (reader, journalist, editor).
 """
+
 import requests
 
 from django.contrib import messages
@@ -17,12 +18,19 @@ from .forms import (
     NewsletterForm,
     PublisherForm,
 )
-from .models import Article, ArticleSubscription, Newsletter, Publisher
+from .models import (
+    Article,
+    ArticleSubscription,
+    Newsletter,
+    Publisher,
+)
 
 
 # ------------------- HOME -------------------
 def home(request):
-    """Public landing page. If user is authenticated, redirect to their dashboard."""
+    """
+    Public landing page. If user is authenticated, redirect to their dashboard.
+    """
     if request.user.is_authenticated:
         return redirect("role_redirect")
     return render(request, "news/home.html")
@@ -57,7 +65,9 @@ def reader_dashboard(request):
     articles = Article.objects.filter(approved=True)
     subscribed_articles = Article.objects.filter(
         approved=True,
-        pk__in=ArticleSubscription.objects.filter(reader=request.user).values_list("article_id", flat=True),
+        pk__in=ArticleSubscription.objects.filter(
+            reader=request.user
+        ).values_list("article_id", flat=True),
     )
     publisher_articles = Article.objects.filter(
         approved=True,
@@ -69,11 +79,15 @@ def reader_dashboard(request):
     )
 
     subscription_feed = (
-        subscribed_articles | publisher_articles | journalist_articles
-    ).distinct().order_by("-created_at")
+        (subscribed_articles | publisher_articles | journalist_articles)
+        .distinct()
+        .order_by("-created_at")
+    )
 
     subscribed_article_ids = set(
-        ArticleSubscription.objects.filter(reader=request.user).values_list("article_id", flat=True)
+        ArticleSubscription.objects.filter(reader=request.user).values_list(
+            "article_id", flat=True
+        )
     )
     return render(
         request,
@@ -93,10 +107,12 @@ def article_list(request):
 
     Readers see only approved articles, while editors and journalists see all.
     """
-    if request.user.role == 'reader':
+    if request.user.role == "reader":
         articles = Article.objects.filter(approved=True)
         subscribed_article_ids = set(
-            ArticleSubscription.objects.filter(reader=request.user).values_list("article_id", flat=True)
+            ArticleSubscription.objects.filter(
+                reader=request.user
+            ).values_list("article_id", flat=True)
         )
     else:
         articles = Article.objects.all()
@@ -122,13 +138,19 @@ def create_article(request):
         form = ArticleForm(request.POST, user=request.user)
         if form.is_valid():
             article = form.save(commit=False)
-            article.journalist = request.user if request.user.role == "journalist" else None
+            article.journalist = (
+                request.user if request.user.role == "journalist" else None
+            )
             article.save()
             messages.success(request, "Article created successfully.")
             return redirect("article_list")
     else:
         form = ArticleForm(user=request.user)
-    return render(request, "news/create_article.html", {"form": form, "type": "Create New Article"})
+    return render(
+        request,
+        "news/create_article.html",
+        {"form": form, "type": "Create New Article"},
+    )
 
 
 @login_required
@@ -141,11 +163,13 @@ def view_article(request, pk):
     """
     article = get_object_or_404(Article, pk=pk)
     # Editors can view any article, journalists can view any approved article or their own drafts
-    if request.user.role == 'editor':
+    if request.user.role == "editor":
         pass  # Editors can view any article
-    elif request.user.role == 'journalist':
+    elif request.user.role == "journalist":
         if not article.approved and article.journalist != request.user:
-            messages.error(request, "You can only view your own pending articles.")
+            messages.error(
+                request, "You can only view your own pending articles."
+            )
             return redirect("article_list")
     else:
         # Readers can only view approved articles
@@ -165,9 +189,9 @@ def edit_article(request, pk):
     article = get_object_or_404(Article, pk=pk)
 
     # Check permissions
-    if request.user.role == 'editor':
+    if request.user.role == "editor":
         pass  # Editors can edit any article
-    elif request.user.role == 'journalist':
+    elif request.user.role == "journalist":
         if article.journalist != request.user:
             messages.error(request, "You can only edit your own articles.")
             return redirect("article_list")
@@ -183,7 +207,15 @@ def edit_article(request, pk):
             return redirect("article_list")
     else:
         form = ArticleForm(instance=article, user=request.user)
-    return render(request, "news/edit_article.html", {"form": form, "title": "Edit Article", "submit_label": "Save Changes"})
+    return render(
+        request,
+        "news/edit_article.html",
+        {
+            "form": form,
+            "title": "Edit Article",
+            "submit_label": "Save Changes",
+        },
+    )
 
 
 @login_required
@@ -196,14 +228,16 @@ def delete_article(request, pk):
     article = get_object_or_404(Article, pk=pk)
 
     # Check permissions
-    if request.user.role == 'editor':
+    if request.user.role == "editor":
         pass  # Editors can delete any article
-    elif request.user.role == 'journalist':
+    elif request.user.role == "journalist":
         if article.journalist != request.user:
             messages.error(request, "You can only delete your own articles.")
             return redirect("article_list")
     else:
-        messages.error(request, "You don't have permission to delete articles.")
+        messages.error(
+            request, "You don't have permission to delete articles."
+        )
         return redirect("article_list")
 
     article.delete()
@@ -282,7 +316,9 @@ def publisher_list(request):
     Display list of all publishers.
     """
     publishers = Publisher.objects.all()
-    return render(request, "news/publisher_list.html", {"publishers": publishers})
+    return render(
+        request, "news/publisher_list.html", {"publishers": publishers}
+    )
 
 
 @login_required
@@ -320,7 +356,11 @@ def edit_publisher(request, pk):
     else:
         form = PublisherForm(instance=publisher)
 
-    return render(request, "news/edit_publisher.html", {"form": form, "publisher": publisher})
+    return render(
+        request,
+        "news/edit_publisher.html",
+        {"form": form, "publisher": publisher},
+    )
 
 
 # ------------------- ARTICLE APPROVAL -------------------
@@ -345,10 +385,11 @@ def approve_article(request, pk):
 
         from django.core.mail import send_mail
         from django.conf import settings
+
         for subscriber in set(subscribers):  # Remove duplicates
             send_mail(
-                f'New Article Approved: {article.title}',
-                f'Check out the new article: {article.title}\n\n{article.content[:200]}...',
+                f"New Article Approved: {article.title}",
+                f"Check out the new article: {article.title}\n\n{article.content[:200]}...",
                 settings.DEFAULT_FROM_EMAIL,
                 [subscriber.email],
                 fail_silently=True,
@@ -356,7 +397,9 @@ def approve_article(request, pk):
 
         # POST to /api/approved/ (optional integration)
         try:
-            url = "http://localhost:8000/api/approved/"  # Adjust for production
+            url = (
+                "http://localhost:8000/api/approved/"  # Adjust for production
+            )
             data = {
                 "article_id": article.id,
                 "title": article.title,
@@ -369,7 +412,9 @@ def approve_article(request, pk):
 
         messages.success(request, f"Article '{article.title}' approved.")
     else:
-        messages.info(request, f"Article '{article.title}' is already approved.")
+        messages.info(
+            request, f"Article '{article.title}' is already approved."
+        )
     return redirect("editor_dashboard")
 
 
@@ -400,7 +445,9 @@ def approve_newsletter(request, pk):
         newsletter.save()
         messages.success(request, f"Newsletter '{newsletter.title}' approved.")
     else:
-        messages.info(request, f"Newsletter '{newsletter.title}' is already approved.")
+        messages.info(
+            request, f"Newsletter '{newsletter.title}' is already approved."
+        )
     return redirect("editor_dashboard")
 
 
@@ -425,7 +472,11 @@ def pending_articles(request):
     View only pending articles for editors.
     """
     pending_articles = Article.objects.filter(approved=False)
-    return render(request, "news/pending_articles.html", {"pending_articles": pending_articles})
+    return render(
+        request,
+        "news/pending_articles.html",
+        {"pending_articles": pending_articles},
+    )
 
 
 # ------------------- ASSIGN ARTICLE -------------------
@@ -440,14 +491,21 @@ def assign_article(request, pk):
         form = AssignArticleForm(request.POST, instance=article)
         if form.is_valid():
             form.save()
-            messages.success(request, f"Article '{article.title}' assigned successfully.")
+            messages.success(
+                request, f"Article '{article.title}' assigned successfully."
+            )
             return redirect("editor_dashboard")
     else:
         form = AssignArticleForm(instance=article)
 
-    return render(request, "news/assign_article.html", {"form": form, "article": article})
+    return render(
+        request, "news/assign_article.html", {"form": form, "article": article}
+    )
+
 
 # ------------------- NEWSLETTERS -------------------
+
+
 @login_required
 def newsletter_list(request):
     """
@@ -459,7 +517,9 @@ def newsletter_list(request):
         newsletters = Newsletter.objects.all()
     else:  # readers
         newsletters = Newsletter.objects.filter(approved=True)
-    return render(request, "news/newsletter_list.html", {"newsletters": newsletters})
+    return render(
+        request, "news/newsletter_list.html", {"newsletters": newsletters}
+    )
 
 
 @login_required
@@ -478,7 +538,16 @@ def create_newsletter(request):
             return redirect("newsletter_list")
     else:
         form = NewsletterForm()
-    return render(request, "news/create_newsletter.html", {"form": form, "title": "Create New Newsletter", "submit_label": "Save Newsletter"})
+    return render(
+        request,
+        "news/create_newsletter.html",
+        {
+            "form": form,
+            "title": "Create New Newsletter",
+            "submit_label": "Save Newsletter",
+        },
+    )
+
 
 @login_required
 def view_newsletter(request, pk):
@@ -487,18 +556,23 @@ def view_newsletter(request, pk):
     """
     newsletter = get_object_or_404(Newsletter, pk=pk)
     # Editors can view any newsletter, journalists can view any approved newsletter or their own drafts
-    if request.user.role == 'editor':
+    if request.user.role == "editor":
         pass  # Editors can view any newsletter
-    elif request.user.role == 'journalist':
+    elif request.user.role == "journalist":
         if not newsletter.approved and newsletter.journalist != request.user:
-            messages.error(request, "You can only view your own pending newsletters.")
+            messages.error(
+                request, "You can only view your own pending newsletters."
+            )
             return redirect("newsletter_list")
     else:
         # Readers can only view approved newsletters
         if not newsletter.approved:
             messages.error(request, "This newsletter is not yet approved.")
             return redirect("newsletter_list")
-    return render(request, "news/view_newsletter.html", {"newsletter": newsletter})
+    return render(
+        request, "news/view_newsletter.html", {"newsletter": newsletter}
+    )
+
 
 @login_required
 def edit_newsletter(request, pk):
@@ -508,14 +582,16 @@ def edit_newsletter(request, pk):
     newsletter = get_object_or_404(Newsletter, pk=pk)
 
     # Check permissions
-    if request.user.role == 'editor':
+    if request.user.role == "editor":
         pass  # Editors can edit any newsletter
-    elif request.user.role == 'journalist':
+    elif request.user.role == "journalist":
         if newsletter.journalist != request.user:
             messages.error(request, "You can only edit your own newsletters.")
             return redirect("newsletter_list")
     else:
-        messages.error(request, "You don't have permission to edit newsletters.")
+        messages.error(
+            request, "You don't have permission to edit newsletters."
+        )
         return redirect("newsletter_list")
 
     if request.method == "POST":
@@ -527,7 +603,16 @@ def edit_newsletter(request, pk):
     else:
         form = NewsletterForm(instance=newsletter)
 
-    return render(request, "news/edit_newsletter.html", {"form": form, "title": "Edit Newsletter", "submit_label": "Save Changes"})
+    return render(
+        request,
+        "news/edit_newsletter.html",
+        {
+            "form": form,
+            "title": "Edit Newsletter",
+            "submit_label": "Save Changes",
+        },
+    )
+
 
 @login_required
 def delete_newsletter(request, pk):
@@ -537,14 +622,18 @@ def delete_newsletter(request, pk):
     newsletter = get_object_or_404(Newsletter, pk=pk)
 
     # Check permissions
-    if request.user.role == 'editor':
+    if request.user.role == "editor":
         pass  # Editors can delete any newsletter
-    elif request.user.role == 'journalist':
+    elif request.user.role == "journalist":
         if newsletter.journalist != request.user:
-            messages.error(request, "You can only delete your own newsletters.")
+            messages.error(
+                request, "You can only delete your own newsletters."
+            )
             return redirect("newsletter_list")
     else:
-        messages.error(request, "You don't have permission to delete newsletters.")
+        messages.error(
+            request, "You don't have permission to delete newsletters."
+        )
         return redirect("newsletter_list")
 
     newsletter.delete()
@@ -589,7 +678,9 @@ def subscribe_publishers(request):
         return redirect("subscribe_publishers")
 
     publishers = Publisher.objects.all()
-    return render(request, "news/subscribe_publishers.html", {"publishers": publishers})
+    return render(
+        request, "news/subscribe_publishers.html", {"publishers": publishers}
+    )
 
 
 @login_required
@@ -598,20 +689,27 @@ def subscribe_journalists(request):
     if request.method == "POST":
         journalist_id = request.POST.get("journalist_id")
         action = request.POST.get("action")
-        journalist = get_object_or_404(get_user_model(), pk=journalist_id, role="journalist")
+        journalist = get_object_or_404(
+            get_user_model(), pk=journalist_id, role="journalist"
+        )
 
         if action == "subscribe":
             request.user.journalist_subscriptions.add(journalist)
             messages.success(request, f"Subscribed to {journalist.username}.")
         elif action == "unsubscribe":
             request.user.journalist_subscriptions.remove(journalist)
-            messages.success(request, f"Unsubscribed from {journalist.username}.")
+            messages.success(
+                request, f"Unsubscribed from {journalist.username}."
+            )
 
         return redirect("subscribe_journalists")
 
     journalists = get_user_model().objects.filter(role="journalist")
-    user_subscriptions = request.user.journalist_subscriptions.values_list("id", flat=True)
-    return render(request, "news/subscribe_journalists.html", {
-        "journalists": journalists,
-        "user_subscriptions": user_subscriptions
-    })
+    user_subscriptions = request.user.journalist_subscriptions.values_list(
+        "id", flat=True
+    )
+    return render(
+        request,
+        "news/subscribe_journalists.html",
+        {"journalists": journalists, "user_subscriptions": user_subscriptions},
+    )
