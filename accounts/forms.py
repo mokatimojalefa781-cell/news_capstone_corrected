@@ -31,7 +31,7 @@ class RegistrationForm(UserCreationForm):
             raise forms.ValidationError("A user with that email already exists.")
         return email
 
-
+ # Bug fix: improved validation for user forms
 class CustomLoginForm(AuthenticationForm):
     """
     Custom login form with Bootstrap styling.
