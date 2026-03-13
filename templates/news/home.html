@@ -1,19 +1,61 @@
-{% extends 'base.html' %}
+{% extends "news/base.html" %}
+
 {% block content %}
-<h2>Approved Articles</h2>
-<ul>
-    {% for article in articles %}
-        <li><strong>{{ article.title }}</strong> by {{ article.journalist.username }} {% if article.publisher %}({{ article.publisher.name }}){% endif %}</li>
-    {% empty %}
-        <li>No approved articles yet.</li>
-    {% endfor %}
-</ul>
-<h2>Approved Newsletters</h2>
-<ul>
-    {% for newsletter in newsletters %}
-        <li><strong>{{ newsletter.title }}</strong> by {{ newsletter.journalist.username }} {% if newsletter.publisher %}({{ newsletter.publisher.name }}){% endif %}</li>
-    {% empty %}
-        <li>No approved newsletters yet.</li>
-    {% endfor %}
-</ul>
+<div class="container mt-4">
+    <h1>Welcome to the News Platform</h1>
+
+    {% if user.is_authenticated %}
+        <p>
+            Hello, {{ user.username }} |
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">
+                    Logout
+                </button>
+            </form>
+        </p>
+
+        <h3>Articles</h3>
+        <ul>
+            {% for article in articles %}
+                <li>
+                    <a href="{% url 'view_article' article.pk %}">
+                        {{ article.title }}
+                    </a>
+                </li>
+            {% empty %}
+                <li>No articles yet.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Newsletters</h3>
+        <ul>
+            {% for newsletter in newsletters %}
+                <li>
+                    <a href="{% url 'view_newsletter' newsletter.pk %}">
+                        {{ newsletter.title }}
+                    </a>
+                </li>
+            {% empty %}
+                <li>No newsletters yet.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Publishers</h3>
+        <ul>
+            {% for publisher in publishers %}
+                <li>{{ publisher.name }}</li>
+            {% empty %}
+                <li>No publishers yet.</li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+        <p>
+            You are not logged in.
+            <a href="{% url 'login' %}">Login here</a>
+        </p>
+    {% endif %}
+</div>
 {% endblock %}
+

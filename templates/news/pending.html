@@ -1,25 +1,23 @@
-{% extends 'base.html' %}
+{% extends "news/base.html" %}
+
 {% block content %}
-<h2>Pending Articles</h2>
-<ul>
-{% for article in articles %}
-    <li><strong>{{ article.title }}</strong> by {{ article.journalist.username }}
-        <a href="{% url 'approve_article' article.pk %}">Approve</a>
-        <a href="{% url 'reject_article' article.pk %}">Reject</a>
-    </li>
-{% empty %}
-    <li>No pending articles.</li>
-{% endfor %}
-</ul>
-<h2>Pending Newsletters</h2>
-<ul>
-{% for newsletter in newsletters %}
-    <li><strong>{{ newsletter.title }}</strong> by {{ newsletter.journalist.username }}
-        <a href="{% url 'approve_newsletter' newsletter.pk %}">Approve</a>
-        <a href="{% url 'reject_newsletter' newsletter.pk %}">Reject</a>
-    </li>
-{% empty %}
-    <li>No pending newsletters.</li>
-{% endfor %}
-</ul>
+<h1>Pending Articles</h1>
+
+{% if articles %}
+    <ul class="article-list">
+        {% for article in articles %}
+            <li>
+                <h3>{{ article.title }} by {{ article.journalist.username }}</h3>
+                <p>{{ article.content|truncatewords:30 }}</p>
+                <a href="{% url 'view_article' article.pk %}" class="btn btn-info">Read</a>
+                <a href="{% url 'approve_article' article.pk %}" class="btn btn-success">Approve</a>
+                <a href="{% url 'edit_article' article.pk %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'assign_article' article.pk %}" class="btn btn-dark">Assign</a>
+                <a href="{% url 'delete_article' article.pk %}" class="btn btn-danger">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No pending articles.</p>
+{% endif %}
 {% endblock %}

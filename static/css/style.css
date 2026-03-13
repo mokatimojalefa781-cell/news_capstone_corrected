@@ -1,0 +1,240 @@
+/* ===== COLOR PALETTE ===== */
+:root {
+    --brown-900: #4a3428;
+    --brown-700: #6f4e37;
+    --blue-700: #1f4e79;
+    --blue-500: #3b82c4;
+    --gray-900: #2f3439;
+    --gray-700: #59626b;
+    --gray-300: #d7dce1;
+    --gray-100: #f2f4f7;
+    --white: #ffffff;
+
+    --shadow-sm: 0 4px 10px rgba(0,0,0,0.08);
+    --shadow-md: 0 10px 24px rgba(0,0,0,0.15);
+    --radius: 14px;
+}
+
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ===== BODY ===== */
+body {
+    background: linear-gradient(145deg, var(--gray-100), #e9edf1);
+    color: var(--gray-900);
+    line-height: 1.6;
+}
+
+/* ===== HEADER ===== */
+header {
+    background: linear-gradient(90deg, var(--brown-900), var(--blue-700));
+    color: var(--white);
+    padding: 1rem 1.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+.nav-container {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+nav a {
+    color: var(--white);
+    text-decoration: none;
+    margin-left: 1rem;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: 0.2s ease;
+}
+
+nav a:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* ===== HERO ===== */
+.hero {
+    background: linear-gradient(120deg, var(--brown-700), var(--blue-700));
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero h2 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 25px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ===== HEADINGS ===== */
+h1, h2, h3 {
+    margin-bottom: 15px;
+    color: var(--brown-700);
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary {
+    background: var(--blue-700);
+    color: white;
+}
+
+.btn-danger {
+    background: #b23a48;
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ===== FORMS ===== */
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--gray-300);
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--blue-500);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59,130,196,0.2);
+}
+
+/* ===== CARDS ===== */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid var(--gray-300);
+}
+
+th {
+    background: #ebf2f9;
+    color: var(--blue-700);
+}
+
+/* ===== ALERTS ===== */
+.alert {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.alert-success {
+    background: #e9f7ef;
+    color: #1c6e3e;
+}
+
+.alert-error {
+    background: #fbeaea;
+    color: #8b2a2f;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+    background: linear-gradient(90deg, var(--gray-900), var(--blue-700));
+    color: white;
+}
+
+/* ===== DARK MODE ===== */
+.dark-mode {
+    background: #1e1e1e;
+    color: #f1f1f1;
+}
+
+.dark-mode .container,
+.dark-mode .card {
+    background: #2a2a2a;
+    color: white;
+}
+
+.dark-mode header,
+.dark-mode footer {
+    background: #111;
+}
+
+/* ===== ANIMATION ===== */
+.fade-in {
+    animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(15px);}
+    to {opacity:1; transform:translateY(0);}
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px) {
+    .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    .hero h2 {
+        font-size: 1.6rem;
+    }
+}

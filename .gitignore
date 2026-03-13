@@ -1,23 +1,30 @@
 # Python
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
 *.pyd
+
+# Virtual environments
+venv/
+env/
+.virtualenv/
 
 # Django
 *.log
 db.sqlite3
 media/
 
-# Virtual environments
-venv/
-.venv/
-env/
-
-# OS / Editor
+# OS
 .DS_Store
+Thumbs.db
+
+# IDE
 .vscode/
 .idea/
 
-# Sphinx
+# Docker
+*.env
+.env
+
+# Sphinx build
 docs/_build/

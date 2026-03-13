@@ -1,11 +1,43 @@
-{% extends 'base.html' %}
+{% extends "news/base.html" %}
 {% block content %}
-<h2>Articles</h2>
-<ul>
+<h1>Articles</h1>
+
+{% if user_role == "journalist" %}
+    <a href="{% url 'create_article' %}" class="btn btn-primary">Create New Article</a>
+{% endif %}
+
+<ul class="article-list">
     {% for article in articles %}
-    <li><strong>{{ article.title }}</strong><br>{{ article.content|truncatechars:160 }}<br>by {{ article.journalist.username }} {% if article.publisher %}({{ article.publisher.name }}){% endif %}</li>
+        <li>
+            <h3>{{ article.title }} by {{ article.journalist.username }}</h3>
+            <p>{{ article.content|truncatewords:30 }}</p>
+            <a href="{% url 'view_article' article.pk %}" class="btn btn-info">Read</a>
+
+            {% if user_role == "reader" %}
+                <a href="{% url 'toggle_article_subscription' article.pk %}" class="btn btn-secondary">
+                    {% if article.pk in subscribed_article_ids %}Unsubscribe{% else %}Subscribe{% endif %}
+                </a>
+            {% endif %}
+
+            {% if user_role == "journalist" or user_role == "editor" %}
+                <a href="{% url 'edit_article' article.pk %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'delete_article' article.pk %}" class="btn btn-danger">Delete</a>
+            {% endif %}
+
+            {% if user_role == "editor" %}
+                {% if article.approved %}
+                    <a href="{% url 'unapprove_article' article.pk %}" class="btn btn-outline-secondary">Unapprove</a>
+                {% else %}
+                    <a href="{% url 'approve_article' article.pk %}" class="btn btn-success">Approve</a>
+                {% endif %}
+                <a href="{% url 'assign_article' article.pk %}" class="btn btn-dark">Assign</a>
+            {% endif %}
+        </li>
     {% empty %}
-    <li>No articles available.</li>
+        <li>No articles available.</li>
     {% endfor %}
 </ul>
 {% endblock %}
+
+
+

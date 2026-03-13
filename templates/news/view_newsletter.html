@@ -1,0 +1,31 @@
+{% extends "news/base.html" %}
+{% block content %}
+<h1>{{ article.title }}</h1>
+<p>By {{ article.journalist.username }}</p>
+<p>{{ article.content }}</p>
+
+<a href="{% url 'article_list' %}" class="btn btn-secondary">Back</a>
+
+{% if user_role == "reader" %}
+    <a href="{% url 'toggle_article_subscription' article.pk %}" class="btn btn-secondary">
+        {% if is_subscribed %}Unsubscribe{% else %}Subscribe{% endif %}
+    </a>
+{% endif %}
+
+{% if user_role == "journalist" or user_role == "editor" %}
+    <a href="{% url 'edit_article' article.pk %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'delete_article' article.pk %}" class="btn btn-danger">Delete</a>
+{% endif %}
+
+{% if user_role == "editor" %}
+    {% if article.is_approved %}
+        <a href="{% url 'unapprove_article' article.pk %}" class="btn btn-outline-secondary">Unapprove</a>
+    {% else %}
+        <a href="{% url 'approve_article' article.pk %}" class="btn btn-success">Approve</a>
+    {% endif %}
+    <a href="{% url 'assign_article' article.pk %}" class="btn btn-dark">Assign</a>
+{% endif %}
+{% endblock %}
+
+
+
