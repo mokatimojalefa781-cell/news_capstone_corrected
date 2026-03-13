@@ -1,5 +1,6 @@
 """
 Custom user model for the News Application.
+# Feature: Added user profile enhancements
 
 This model extends Django's AbstractUser to support
 role-based access control and subscription features.
