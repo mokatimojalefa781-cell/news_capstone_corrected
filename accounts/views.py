@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from .forms import RegistrationForm
 
 def register(request):
+    """Handle user registration."""
     if request.user.is_authenticated:
         return redirect("home")
     if request.method == "POST":

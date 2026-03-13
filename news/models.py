@@ -3,6 +3,8 @@ from django.db import models
 
 
 class Publisher(models.Model):
+    """Represents a news publisher with associated editors and journalists."""
+
     name = models.CharField(max_length=150, unique=True)
 
     editors = models.ManyToManyField(
@@ -24,6 +26,8 @@ class Publisher(models.Model):
 
 
 class Newsletter(models.Model):
+    """Represents a newsletter created by a journalist for a publisher."""
+
     title = models.CharField(max_length=200)
     content = models.TextField()
 
@@ -52,6 +56,8 @@ class Newsletter(models.Model):
 
 
 class Article(models.Model):
+    """Represents an article written by a journalist for approval."""
+
     title = models.CharField(max_length=200)
     content = models.TextField()
 
