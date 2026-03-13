@@ -5,7 +5,7 @@ from django.db import models
 
 
 class Publisher(models.Model):
-    """An organisation that publishes articles and newsletters."""
+    """Represents a news publisher with associated editors and journalists."""
 
     name = models.CharField(max_length=150, unique=True)
 
@@ -30,8 +30,38 @@ class Publisher(models.Model):
         return self.name
 
 
+class Newsletter(models.Model):
+    """Represents a newsletter created by a journalist for a publisher."""
+
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+
+    journalist = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="newsletters",
+        limit_choices_to={"role": "journalist"},
+    )
+
+    publisher = models.ForeignKey(
+        Publisher,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="newsletters",
+    )
+
+    is_approved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Article(models.Model):
-    """Article content submitted by a journalist for approval."""
+    """Represents an article written by a journalist for approval."""
 
     title = models.CharField(max_length=200)
     content = models.TextField()

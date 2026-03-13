@@ -28,6 +28,8 @@ def register(request):
     """
     Role-based registration view.
     """
+    if request.user.is_authenticated:
+        return redirect("home")
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():

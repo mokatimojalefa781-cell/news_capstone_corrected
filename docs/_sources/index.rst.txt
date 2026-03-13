@@ -7,8 +7,6 @@ This is the documentation for the News Capstone Project, a Django-based news man
    :maxdepth: 2
    :caption: Contents:
 
-<<<<<<< HEAD
-=======
    accounts
    news
 
@@ -19,4 +17,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
->>>>>>> docs
