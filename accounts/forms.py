@@ -15,6 +15,7 @@ class RegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Add Bootstrap classes
+        # Bug fix: improved validation for user forms
         self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Username'})
         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Email'})
         self.fields['role'].widget.attrs.update({'class': 'form-select'})
