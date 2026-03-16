@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Reader Dashboard</h2>
+<p>Welcome, {{ request.user.username }} 👋</p>
+
+<p>
+    <a href="{% url 'subscribe_publishers' %}" class="btn btn-secondary">Manage Publisher Subscriptions</a>
+    <a href="{% url 'subscribe_journalists' %}" class="btn btn-secondary">Manage Journalist Subscriptions</a>
+</p>
+
+<h3>Subscription Feed</h3>
+<p>Articles from publishers and journalists you follow:</p>
+{% if subscription_feed %}
+    <ul>
+        {% for article in subscription_feed %}
+            <li>
+                <strong>{{ article.title }}</strong>
+                {% if article.publisher %} — {{ article.publisher.name }}{% endif %}
+                {% if article.journalist %} by {{ article.journalist.username }}{% endif %}
+                <a href="{% url 'view_article' article.pk %}">Read</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No content from your subscriptions yet. <a href="{% url 'subscribe_publishers' %}">Subscribe to publishers</a> or <a href="{% url 'subscribe_journalists' %}">journalists</a> to see content here.</p>
+{% endif %}
+
+<hr>
+
+<h3>All Approved Articles</h3>
+{% if articles %}
+    <ul>
+        {% for article in articles %}
+            <li>
+                <strong>{{ article.title }}</strong>
+                <a href="{% url 'view_article' article.pk %}">Read</a>
+                <a href="{% url 'toggle_article_subscription' article.pk %}" class="btn btn-sm btn-outline-secondary">
+                    {% if article.pk in subscribed_article_ids %}Unsubscribe{% else %}Subscribe{% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No approved articles available yet.</p>
+{% endif %}
+{% endblock %}

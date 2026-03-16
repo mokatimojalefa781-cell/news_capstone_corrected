@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Journalist Dashboard</h2>
+<p>Welcome, {{ request.user.username }} ✍</p>
+
+<hr>
+
+<a href="{% url 'create_article' %}" class="btn btn-primary">+ Create Article</a>
+<a href="{% url 'create_newsletter' %}" class="btn btn-secondary">+ Create Newsletter</a>
+
+<hr>
+
+<h3>Your Articles</h3>
+
+{% if articles %}
+    {% for article in articles %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <h4>{{ article.title }}</h4>
+            <p>Status: <strong>{% if article.approved %}Approved{% else %}Pending{% endif %}</strong></p>
+
+            <a href="{% url 'view_article' article.pk %}">Read</a> |
+            <a href="{% url 'edit_article' article.pk %}">Edit</a> |
+            <a href="{% url 'delete_article' article.pk %}">Delete</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>You haven't written any articles yet.</p>
+{% endif %}
+
+<hr>
+
+<h3>Your Newsletters</h3>
+{% if newsletters %}
+    {% for newsletter in newsletters %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <h4>{{ newsletter.title }}</h4>
+            <p>Status: <strong>{% if newsletter.is_approved %}Approved{% else %}Pending{% endif %}</strong></p>
+            <a href="{% url 'view_newsletter' newsletter.pk %}">Read</a> |
+            <a href="{% url 'edit_newsletter' newsletter.pk %}">Edit</a> |
+            <a href="{% url 'delete_newsletter' newsletter.pk %}">Delete</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>You haven't written any newsletters yet.</p>
+{% endif %}
+
+{% endblock %}

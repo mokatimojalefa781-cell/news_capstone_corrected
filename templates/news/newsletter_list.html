@@ -1,0 +1,25 @@
+{% extends "news/base.html" %}
+{% block content %}
+<h1>Newsletters</h1>
+
+{% if user_role == "journalist" %}
+    <a href="{% url 'create_newsletter' %}" class="btn btn-primary">Create New Newsletter</a>
+{% endif %}
+
+<ul class="newsletter-list">
+    {% for newsletter in newsletters %}
+        <li>
+            <h3>{{ newsletter.title }} by {{ newsletter.journalist.username }}</h3>
+            <p>{{ newsletter.content|truncatewords:30 }}</p>
+            <a href="{% url 'view_newsletter' newsletter.pk %}" class="btn btn-info">Read</a>
+
+            {% if user_role == "journalist" %}
+                <a href="{% url 'edit_newsletter' newsletter.pk %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'delete_newsletter' newsletter.pk %}" class="btn btn-danger">Delete</a>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>No newsletters available.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
