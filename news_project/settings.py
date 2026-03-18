@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'news_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'news_db',       # Make sure this database exists in MariaDB
-        'USER': 'root',
-        'PASSWORD': 'mojalefa',  # Your MariaDB password
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': os.environ.get('DB_NAME', 'news_db'),       # Database must exist
+        'USER': os.environ.get('DB_USER', 'root'),          # Your MariaDB user
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'mojalefa'),  # Your MariaDB password
+        'HOST': os.environ.get('DB_HOST', 'db'),  # Host machine from db contaner
+        'PORT': os.environ.get('DB_PORT', '3306'),          # Default MySQL port
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
