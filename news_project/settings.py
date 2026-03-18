@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', 'news_db'),       # Database must exist
         'USER': os.environ.get('DB_USER', 'root'),          # Your MariaDB user
         'PASSWORD': os.environ.get('DB_PASSWORD', 'mojalefa'),  # Your MariaDB password
-        'HOST': os.environ.get('DB_HOST', 'db'),  # Host machine from db contaner
+        'HOST': os.environ.get('DB_HOST', 'db'),  # Host machine from db_container
         'PORT': os.environ.get('DB_PORT', '3306'),          # Default MySQL port
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
