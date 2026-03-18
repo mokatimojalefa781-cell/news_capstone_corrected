@@ -1,4 +1,5 @@
 
+**Screenshots coming soon!
 # News Application – Django Capstone Project
 
 ## Project Overview
